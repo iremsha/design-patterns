@@ -12,6 +12,7 @@ namespace ConsoleApp1
 
         public interface IPartCar
         {
+            //price, material
         }
 
         public interface ICarEngine : IPartCar
