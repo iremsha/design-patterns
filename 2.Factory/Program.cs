@@ -2,76 +2,81 @@
 
 namespace ConsoleApp1
 {
-    public class Program
+    class Program
     {
-        public interface ICar
+        static void Main(string[] args)
         {
-            string Maker { get; }
-            string NameModel { get; }
+            Console.WriteLine("Hello World!");
+
         }
 
         public interface IPartCar
         {
-            //price, material
-        }
+            string MarkManufacturer { get; }
 
-        public interface ICarEngine : IPartCar
+        }
+        public interface IEngien : IPartCar
         {
             string Model { get; }
         }
 
-        public interface ICarInterior : IPartCar
+        public interface IBody : IPartCar
         {
+            string Type { get; }
         }
 
-        public interface ICarBody : IPartCar
+        public interface IInterer : IPartCar
         {
+
         }
 
         public interface IManufacturer
         {
             string Name { get; }
         }
-
-        public interface ICarAutomaker : IManufacturer
+        public interface IMarkCar : IManufacturer
         {
-            string Name { get; }
-            void Assemble();
-            ICarBody BodyManufacturer();
-            ICarEngine EngineManufacturer();
-            ICarInterior InteriorManufacturer();
+            IBody CreatorBody();
+            IEngien CreatorEngien();
+            IInterer CreatorInterer();
         }
 
-        public class CarBody : ICarBody
+        public class Body : IBody
         {
-            public IManufacturer Manufacturer { get; }
+            IManufacturer manufacturer;
 
-            public CarBody(IManufacturer _Manufacturer)
+            public string MarkManufacturer => manufacturer.Name;
+            public string Type => "Sport";
+
+            public Body(IManufacturer _manufacturer)
             {
-                Manufacturer = _Manufacturer;
+                manufacturer = _manufacturer;
             }
         }
 
-        public class CarEngine : ICarEngine
+        public class Engien : IEngien
         {
-            public IManufacturer Manufacturer { get; }
+            IManufacturer manufacturer;
+            string IPartCar.MarkManufacturer => manufacturer.Name;
+            string IEngien.Model => "v1.8";
 
-            public CarEngine(IManufacturer _Manufacturer)
+            public Engien(IManufacturer _manufacturer)
             {
-                Manufacturer = _Manufacturer;
+                manufacturer = _manufacturer;
             }
 
-            public string Model => Manufacturer.Name + " 033";
         }
 
-        public class CarInterior : ICarInterior
+        public class Interer : IInterer
         {
-            public IManufacturer Manufacturer { get; }
+            IManufacturer manufacturer;
+            string IPartCar.MarkManufacturer => manufacturer.Name;
 
-            public CarInterior(IManufacturer _Manufacturer)
+            public Interer(IManufacturer _manufacturer)
             {
-                Manufacturer = _Manufacturer;
+                manufacturer = _manufacturer;
             }
+
         }
 
         public class EngineElectrical : IManufacturer
@@ -79,44 +84,26 @@ namespace ConsoleApp1
             public string Name => "Engine Electrical";
         }
 
-        public class AUDI : ICarAutomaker
+        public class AUDI : IMarkCar
         {
             public string Name => "AUDI";
-            public string ModelEngine => EngineManufacturer().Model;
 
-            public void Assemble()
-            {
-                throw new NotImplementedException();
-            }
+            public IEngien CreatorEngien() => new Engien(new EngineElectrical());
 
-            public ICarBody BodyManufacturer() => new CarBody(this);
+            public IInterer CreatorInterer() => new Interer(new BMW());
 
-            public ICarEngine EngineManufacturer() => new CarEngine(new EngineElectrical());
-
-            public ICarInterior InteriorManufacturer() => new CarInterior(new BMW());
+            IBody IMarkCar.CreatorBody() => new Body(this);
         }
 
-        public class BMW : ICarAutomaker
+        public class BMW : IMarkCar
         {
             public string Name => "BMW";
 
-            public void Assemble()
-            {
-                throw new NotImplementedException();
-            }
+            public IEngien CreatorEngien() => new Engien(new EngineElectrical());
 
-            public ICarBody BodyManufacturer() => new CarBody(this);
+            public IInterer CreatorInterer() => new Interer(this);
 
-            public ICarEngine EngineManufacturer() => new CarEngine(this);
-
-            public ICarInterior InteriorManufacturer() => new CarInterior(this);
-        }
-
-        public static void Main(string[] args)
-        {
-            AUDI myCar = new AUDI();
-            Console.WriteLine(myCar.Name);
-            Console.WriteLine(myCar.ModelEngine);
+            IBody IMarkCar.CreatorBody() => new Body(new AUDI());
         }
     }
 }
