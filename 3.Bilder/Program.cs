@@ -12,7 +12,7 @@ namespace ConsoleApp1
             List<IRecipient> Recipients {get;}
         }
 
-        public class Mail(): IMail
+        public class Mail: IMail
         {
             public string body;
             public string topic;
@@ -28,11 +28,16 @@ namespace ConsoleApp1
         public interface IRecipient
         {
 
-            string Name {get; set;}
+            string Name {get;}
         }
 
-        public class Recipient(string name) : IRecipient
+        public class Recipient: IRecipient
         {
+            private string name;
+            public Recipient(string _name)
+            {
+                name = _name;
+            } 
             string Name => name;
 
         }
