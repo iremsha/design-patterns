@@ -6,8 +6,11 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-
+            var audi = new AUDI();
+            Console.WriteLine("Car: " + audi.Name);
+            Console.WriteLine("Engien from: " + audi.CreatorEngien().MarkManufacturer + " : " + audi.CreatorEngien().Model);
+            Console.WriteLine("Interer from: " + audi.CreatorInterer().MarkManufacturer);
+            Console.WriteLine("Body from: " + audi.CreatorBody().MarkManufacturer);
         }
 
         public interface IPartCar
@@ -92,7 +95,7 @@ namespace ConsoleApp1
 
             public IInterer CreatorInterer() => new Interer(new BMW());
 
-            IBody IMarkCar.CreatorBody() => new Body(this);
+            public IBody CreatorBody() => new Body(this);
         }
 
         public class BMW : IMarkCar
@@ -103,7 +106,7 @@ namespace ConsoleApp1
 
             public IInterer CreatorInterer() => new Interer(this);
 
-            IBody IMarkCar.CreatorBody() => new Body(new AUDI());
+            public IBody CreatorBody() => new Body(new AUDI());
         }
     }
 }
